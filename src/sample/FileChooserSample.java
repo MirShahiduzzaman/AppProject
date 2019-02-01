@@ -59,8 +59,8 @@ public final class FileChooserSample extends Application {
 
         final GridPane inputGridPane = new GridPane();
 
-        GridPane.setConstraints(openButton, 0, 0);
-        GridPane.setConstraints(openMultipleButton, 1, 0);
+        GridPane.setConstraints(openButton, 50, 50);
+        GridPane.setConstraints(openMultipleButton, 100, 100);
         inputGridPane.setHgap(6);
         inputGridPane.setVgap(6);
         inputGridPane.getChildren().addAll(openButton, openMultipleButton);
