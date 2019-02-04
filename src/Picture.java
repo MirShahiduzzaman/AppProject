@@ -21,6 +21,7 @@ public class Picture extends SimplePicture
     /**
      * Constructor that takes no arguments
      */
+    ArrayList<Integer> notes = new ArrayList<Integer>();
     public Picture ()
     {
         /* not needed but use it to show students the implicit call to super()
@@ -87,14 +88,14 @@ public class Picture extends SimplePicture
     }
 
     /** Method to set the blue to 0 */
-    public void zeroBlue()
+    public void defaultConverter()
     {
         Pixel[][] pixels = this.getPixels2D();
         for (Pixel[] rowArray : pixels)
         {
             for (Pixel pixelObj : rowArray)
             {
-                pixelObj.setBlue(0);
+
             }
         }
     }
