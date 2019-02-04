@@ -95,7 +95,19 @@ public class Picture extends SimplePicture
         {
             for (Pixel pixelObj : rowArray)
             {
+                notes.add((pixelObj.getRed() + pixelObj.getGreen() + pixelObj.getBlue())/3);
+            }
+        }
+    }
 
+    public void BlueConverter()
+    {
+        Pixel[][] pixels = this.getPixels2D();
+        for (Pixel[] rowArray : pixels)
+        {
+            for (Pixel pixelObj : rowArray)
+            {
+                notes.add((pixelObj.getRed() + pixelObj.getGreen() + pixelObj.getBlue())/3);
             }
         }
     }
