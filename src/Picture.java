@@ -27,12 +27,12 @@ public class Picture extends SimplePicture {
         }
     }
 
-    public void keepOnlyBlue() {
+    public void GreenConverter() {
         Pixel[][] pixels = this.getPixels2D();
         for (Pixel[] rowArray : pixels) {
             for (Pixel pixelObj : rowArray) {
                 pixelObj.setRed(0);
-                pixelObj.setGreen(0);
+                pixelObj.setBlue(0);
             }
         }
     }
@@ -56,9 +56,4 @@ public class Picture extends SimplePicture {
             }
         }
     }
-
-    public static void main(String[] args) {
-
-    }
-
 }
