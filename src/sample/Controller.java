@@ -1,10 +1,11 @@
 package sample;
+
 import javax.sound.midi.*;
 
-public class Controller{
+public class Controller {
 
     public static void main(String[] args) {
-        try{
+        try {
             /* Create a new Sythesizer and open it. Most of
              * the methods you will want to use to expand on this
              * example can be found in the Java documentation here:
@@ -12,22 +13,19 @@ public class Controller{
              */
             Synthesizer midiSynth = MidiSystem.getSynthesizer();
             midiSynth.open();
-
             //get and load default instrument and channel lists
             Instrument[] instr = midiSynth.getDefaultSoundbank().getInstruments();
             MidiChannel[] mChannels = midiSynth.getChannels();
-
             midiSynth.loadInstrument(instr[0]);//load an instrument
-
             int note = 45;
-
             mChannels[0].noteOn(note, 300);//On channel 0, play note number 60 with velocity 100
-            try { Thread.sleep(1000); // wait time in milliseconds to control duration
-            } catch( InterruptedException e ) { }
+            try {
+                Thread.sleep(1000); // wait time in milliseconds to control duration
+            } catch (InterruptedException e) {
+            }
             mChannels[0].noteOff(note);//turn of the note
-
-
-        } catch (MidiUnavailableException e) {}
+        } catch (MidiUnavailableException e) {
+        }
     }
 
 }

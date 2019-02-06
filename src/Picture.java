@@ -40,7 +40,7 @@ public void printNotes()
         Pixel[][] pixels = this.getPixels2D();
         for (Pixel[] rowArray : pixels) {
             for (Pixel pixelObj : rowArray) {
-                notes.add((int)(((pixelObj.getRed() + pixelObj.getGreen() + pixelObj.getBlue()) / 8)) +5);
+                notes.add(((pixelObj.getRed() + pixelObj.getGreen() + pixelObj.getBlue()) / 6) +10);
             }
         }
     }
@@ -53,7 +53,7 @@ public void printNotes()
         Pixel[][] pixels = this.getPixels2D();
         for (Pixel[] rowArray : pixels) {
             for (Pixel pixelObj : rowArray) {
-                notes.add((int)((pixelObj.getRed())/3)+15);
+                notes.add((pixelObj.getRed())/3);
             }
         }
     }
@@ -66,7 +66,7 @@ public void printNotes()
         Pixel[][] pixels = this.getPixels2D();
         for (Pixel[] rowArray : pixels) {
             for (Pixel pixelObj : rowArray) {
-                notes.add((int)((pixelObj.getGreen())/3)+15);
+                notes.add((pixelObj.getGreen())/3);
             }
         }
     }
@@ -79,7 +79,7 @@ public void printNotes()
         Pixel[][] pixels = this.getPixels2D();
         for (Pixel[] rowArray : pixels) {
             for (Pixel pixelObj : rowArray) {
-                notes.add((int)(((pixelObj.getBlue())/3)+15));
+                notes.add((pixelObj.getRed() + pixelObj.getGreen() + pixelObj.getBlue()) / 3);
             }
         }
     }
@@ -96,6 +96,11 @@ public void printNotes()
                 + " width " + getWidth();
         return output;
 
+    }
+
+    public ArrayList getArray()
+    {
+        return notes;
     }
 
 }
