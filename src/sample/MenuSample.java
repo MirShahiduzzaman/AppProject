@@ -64,6 +64,7 @@ public class MenuSample extends Application {
             new SimpleEntry<String, Effect>("Shadow", new DropShadow())
     };
 
+
     final ImageView pic = new ImageView();
     final Label name = new Label();
     final Label binName = new Label();
