@@ -8,17 +8,6 @@ public class Picture extends SimplePicture {
     ///////////////////// constructors //////////////////////////////////
 
     /**
-     * Constructor that takes no arguments
-     */
-    public Picture ()
-    {
-        /* not needed but use it to show students the implicit call to super()
-         * child constructors always call a parent constructor
-         */
-        super();
-    }
-
-    /**
      * Constructor that takes a file name and creates the picture
      * @param fileName the name of the file to create the picture from
      */
@@ -37,26 +26,6 @@ public class Picture extends SimplePicture {
     {
         // let the parent class handle this width and height
         super(width,height);
-    }
-
-    /**
-     * Constructor that takes a picture and creates a
-     * copy of that picture
-     * @param copyPicture the picture to copy
-     */
-    public Picture(Picture copyPicture)
-    {
-        // let the parent class do the copy
-        super(copyPicture);
-    }
-
-    /**
-     * Constructor that takes a buffered image
-     * @param image the buffered image to use
-     */
-    public Picture(BufferedImage image)
-    {
-        super(image);
     }
 
     /**
@@ -111,26 +80,6 @@ public class Picture extends SimplePicture {
         }
     }
 
-    public void keepOnlyRed() {
-        Pixel[][] pixels = this.getPixels2D();
-        for (Pixel[] rowArray : pixels) {
-            for (Pixel pixelObj : rowArray) {
-                pixelObj.setBlue(0);
-                pixelObj.setGreen(0);
-            }
-        }
-    }
-
-    public void keepOnlyGreen() {
-        Pixel[][] pixels = this.getPixels2D();
-        for (Pixel[] rowArray : pixels) {
-            for (Pixel pixelObj : rowArray) {
-                pixelObj.setRed(0);
-                pixelObj.setBlue(0);
-            }
-        }
-    }
-
     /**
      * Method to return a string with information about this picture.
      * @return a string with information about the picture such as fileName,
@@ -143,32 +92,6 @@ public class Picture extends SimplePicture {
                 + " width " + getWidth();
         return output;
 
-    }
-
-    /** Method to show large changes in color
-     * @param edgeDist the distance for finding edges
-     */
-    public void edgeDetection(int edgeDist)
-    {
-        Pixel leftPixel = null;
-        Pixel rightPixel = null;
-        Pixel[][] pixels = this.getPixels2D();
-        Color rightColor = null;
-        for (int row = 0; row < pixels.length; row++)
-        {
-            for (int col = 0;
-                 col < pixels[0].length-1; col++)
-            {
-                leftPixel = pixels[row][col];
-                rightPixel = pixels[row][col+1];
-                rightColor = rightPixel.getColor();
-                if (leftPixel.colorDistance(rightColor) >
-                        edgeDist)
-                    leftPixel.setColor(Color.BLACK);
-                else
-                    leftPixel.setColor(Color.WHITE);
-            }
-        }
     }
 
 }
