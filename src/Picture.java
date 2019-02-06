@@ -16,7 +16,11 @@ public class Picture extends SimplePicture {
         // let the parent class handle this fileName
         super(fileName);
     }
-
+public void printNotes()
+{
+    for(int x: notes)
+    System.out.println(x);
+}
     /**
      * Constructor that takes the width and height
      * @param height the height of the desired picture
@@ -36,7 +40,7 @@ public class Picture extends SimplePicture {
         Pixel[][] pixels = this.getPixels2D();
         for (Pixel[] rowArray : pixels) {
             for (Pixel pixelObj : rowArray) {
-                notes.add((pixelObj.getRed() + pixelObj.getGreen() + pixelObj.getBlue()) / 3);
+                notes.add(((pixelObj.getRed() + pixelObj.getGreen() + pixelObj.getBlue()) / 6) +10;
             }
         }
     }
