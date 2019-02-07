@@ -1,3 +1,4 @@
+import javax.sound.midi.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.*;
@@ -44,7 +45,42 @@ public void printNotes()
             }
         }
     }
-
+    public static void song()
+    {
+        Picture pix = new Picture("jellyfish.jpg");
+        Picture smallP = pix.scale(1,1);
+        smallP.write("jellyfish.jpg");
+        smallP.defaultConverter();
+        smallP.song();
+    int bass = 20;
+    for(int x:notes)
+    {
+        if(x<bass && bass>20)
+        {
+            int bassCount = 0;
+            while(bassCount < 50)
+            {
+                try {
+                    Synthesizer midiSynth = MidiSystem.getSynthesizer();
+                    midiSynth.open();
+                    Instrument[] instr = midiSynth.getDefaultSoundbank().getInstruments();
+                    MidiChannel[] mChannels = midiSynth.getChannels();
+                    midiSynth.loadInstrument(instr[0]);//load an instrument
+                    mChannels[0].noteOn(bass, 300);//On channel 0, play note number 60 with velocity 100
+                    try {
+                        Thread.sleep(12); // wait time in milliseconds to control duration
+                        System.out.println(bass);
+                    } catch (InterruptedException e) {
+                        System.out.println("CATTCH");
+                    }
+                } catch (MidiUnavailableException e) {
+                    System.out.println("unavible");
+                }
+                bassCount++;
+            }
+        }
+    }
+    }
     /**
      * First Option: uses the red RGB value in each pixel
      *               to add a note to the notes arrayList
