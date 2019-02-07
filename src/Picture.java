@@ -1,3 +1,4 @@
+import javax.sound.midi.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.*;
@@ -16,6 +17,7 @@ public class Picture extends SimplePicture {
         // let the parent class handle this fileName
         super(fileName);
     }
+
 public void printNotes()
 {
     for(int x: notes)
@@ -80,6 +82,35 @@ public void printNotes()
         for (Pixel[] rowArray : pixels) {
             for (Pixel pixelObj : rowArray) {
                 notes.add((pixelObj.getRed() + pixelObj.getGreen() + pixelObj.getBlue()) / 3);
+            }
+        }
+    }
+
+    public static void smoothMusic(String picName)
+    {
+        Picture pix = new Picture(picName);
+        Picture smallP = pix.scale(1,1);
+        smallP.write(picName);
+        smallP.defaultConverter();
+        System.out.println();
+        //smallP.printNotes();
+        for (int i=0; i < smallP.getArray().size(); i++)
+        {
+            try {
+                Synthesizer midiSynth = MidiSystem.getSynthesizer();
+                midiSynth.open();
+                Instrument[] instr = midiSynth.getDefaultSoundbank().getInstruments();
+                MidiChannel[] mChannels = midiSynth.getChannels();
+                midiSynth.loadInstrument(instr[0]);//load an instrument
+                mChannels[0].noteOn((int)smallP.getArray().get(i), 300);//On channel 0, play note number 60 with velocity 100
+                try {
+                    Thread.sleep(12); // wait time in milliseconds to control duration
+                    System.out.println((int)smallP.getArray().get(i));
+                } catch (InterruptedException e) {
+                    System.out.println("CATTCH");
+                }
+            } catch (MidiUnavailableException e) {
+                System.out.println("unavible");
             }
         }
     }

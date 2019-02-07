@@ -801,31 +801,7 @@ public class PictureExplorer implements MouseMotionListener, ActionListener, Mou
      */
     public static void main( String args[])
     {
-        Picture pix = new Picture("rsz_jellyfish.jpg");
-        Picture smallP = pix.scale(1,1);
-        smallP.write("rsz_jellyfish.jpg");
-        smallP.defaultConverter();
-        System.out.println();
-        //smallP.printNotes();
-        for (int i=0; i < smallP.getArray().size(); i++)
-        {
-            try {
-                Synthesizer midiSynth = MidiSystem.getSynthesizer();
-                midiSynth.open();
-                Instrument[] instr = midiSynth.getDefaultSoundbank().getInstruments();
-                MidiChannel[] mChannels = midiSynth.getChannels();
-                midiSynth.loadInstrument(instr[0]);//load an instrument
-                mChannels[0].noteOn((int)smallP.getArray().get(i), 300);//On channel 0, play note number 60 with velocity 100
-                try {
-                    Thread.sleep(12); // wait time in milliseconds to control duration
-                    System.out.println((int)smallP.getArray().get(i));
-                } catch (InterruptedException e) {
-                    System.out.println("CATTCH");
-                }
-            } catch (MidiUnavailableException e) {
-                System.out.println("unavible");
-            }
-        }
+        Picture.smoothMusic("rsz_jellyfish.jpg");
     }
 
 }
