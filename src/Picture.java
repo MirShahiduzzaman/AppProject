@@ -1,6 +1,7 @@
 import javax.sound.midi.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.sql.SQLOutput;
 import java.util.*;
 
 public class Picture extends SimplePicture {
@@ -88,6 +89,8 @@ public void printNotes()
 
     public static void smoothMusic(String picName)
     {
+        int prevNote = -1;
+
         Picture pix = new Picture(picName);
         Picture smallP = pix.scale(1,1);
         smallP.write(picName);
@@ -102,15 +105,39 @@ public void printNotes()
                 Instrument[] instr = midiSynth.getDefaultSoundbank().getInstruments();
                 MidiChannel[] mChannels = midiSynth.getChannels();
                 midiSynth.loadInstrument(instr[0]);//load an instrument
+                if(prevNote == -1)
+                {
+                    prevNote = (int)smallP.getArray().get(i);
+                }
+                else
+                {
+                    if(Math.abs(prevNote - (int)smallP.getArray().get(i)) > 127)
+                    {
+                        smallP.getArray().set(i,(Integer)(255-(int)smallP.getArray().get(i)));
+                        System.out.println("127: " + (int)smallP.getArray().get(i));
+                    }
+                    if(Math.abs(prevNote - (int)smallP.getArray().get(i)) > 63)
+                    {
+                        smallP.getArray().set(i,(Integer)(127-(int)smallP.getArray().get(i)));
+                        System.out.println("63: " + (int)smallP.getArray().get(i));
+                    }
+                    if(Math.abs(prevNote - (int)smallP.getArray().get(i)) > 32)
+                    {
+                        smallP.getArray().set(i,(Integer)(63-(int)smallP.getArray().get(i)));
+                        System.out.println("32: " + (int)smallP.getArray().get(i));
+                    }
+                    prevNote = (int)smallP.getArray().get(i);
+                }
+
                 mChannels[0].noteOn((int)smallP.getArray().get(i), 300);//On channel 0, play note number 60 with velocity 100
                 try {
                     Thread.sleep(12); // wait time in milliseconds to control duration
                     System.out.println((int)smallP.getArray().get(i));
                 } catch (InterruptedException e) {
-                    System.out.println("CATTCH");
+                    System.out.println("CATCH");
                 }
             } catch (MidiUnavailableException e) {
-                System.out.println("unavible");
+                System.out.println("unavailable");
             }
         }
     }
