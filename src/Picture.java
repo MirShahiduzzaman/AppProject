@@ -46,41 +46,71 @@ public void printNotes()
             }
         }
     }
-    public static void song()
+    public static void song(String picName)
     {
-        Picture pix = new Picture("jellyfish.jpg");
+        Picture pix = new Picture(picName);
         Picture smallP = pix.scale(1,1);
-        smallP.write("jellyfish.jpg");
+        smallP.write(picName);
         smallP.defaultConverter();
-        smallP.song();
-    int bass = 20;
-    for(int x:notes)
-    {
-        if(x<bass && bass>20)
+        System.out.println();
+        int bass = 20;
+    for(int x =0; x< smallP.getArray().size();x++)
+
         {
-            int bassCount = 0;
-            while(bassCount < 50)
-            {
-                try {
-                    Synthesizer midiSynth = MidiSystem.getSynthesizer();
-                    midiSynth.open();
-                    Instrument[] instr = midiSynth.getDefaultSoundbank().getInstruments();
-                    MidiChannel[] mChannels = midiSynth.getChannels();
-                    midiSynth.loadInstrument(instr[0]);//load an instrument
-                    mChannels[0].noteOn(bass, 300);//On channel 0, play note number 60 with velocity 100
+            if ( (int)smallP.getArray().get(x)< bass && bass > 20)
+                bass = (int)smallP.getArray().get(x);
+
+            }
+                int bassCount = 0;
+                while (bassCount < 50) {
                     try {
-                        Thread.sleep(12); // wait time in milliseconds to control duration
-                        System.out.println(bass);
-                    } catch (InterruptedException e) {
-                        System.out.println("CATTCH");
+                        Synthesizer midiSynth = MidiSystem.getSynthesizer();
+                        midiSynth.open();
+                        Instrument[] instr = midiSynth.getDefaultSoundbank().getInstruments();
+                        MidiChannel[] mChannels = midiSynth.getChannels();
+                        midiSynth.loadInstrument(instr[0]);//load an instrument
+                        mChannels[0].noteOn(bass, 500);//On channel 0, play note number 60 with velocity 100
+                        try {
+                            Thread.sleep(12); // wait time in milliseconds to control duration
+                            System.out.println(bass);
+                        } catch (InterruptedException e) {
+                            System.out.println("CATTCH");
+                        }
+                    } catch (MidiUnavailableException e) {
+                        System.out.println("unavible");
                     }
-                } catch (MidiUnavailableException e) {
-                    System.out.println("unavible");
+                    bassCount++;
                 }
-                bassCount++;
+            }
+
+
+    public static void smoothMusic(String picName)
+    {
+        Picture pix = new Picture(picName);
+        Picture smallP = pix.scale(1,1);
+        smallP.write(picName);
+        smallP.defaultConverter();
+        System.out.println();
+        //smallP.printNotes();
+        for (int i=0; i < smallP.getArray().size(); i++)
+        {
+            try {
+                Synthesizer midiSynth = MidiSystem.getSynthesizer();
+                midiSynth.open();
+                Instrument[] instr = midiSynth.getDefaultSoundbank().getInstruments();
+                MidiChannel[] mChannels = midiSynth.getChannels();
+                midiSynth.loadInstrument(instr[0]);//load an instrument
+                mChannels[0].noteOn((int)smallP.getArray().get(i), 300);//On channel 0, play note number 60 with velocity 100
+                try {
+                    Thread.sleep(12); // wait time in milliseconds to control duration
+                    System.out.println((int)smallP.getArray().get(i));
+                } catch (InterruptedException e) {
+                    System.out.println("CATTCH");
+                }
+            } catch (MidiUnavailableException e) {
+                System.out.println("unavible");
             }
         }
-    }
     }
     /**
      * First Option: uses the red RGB value in each pixel
@@ -121,34 +151,7 @@ public void printNotes()
         }
     }
 
-    public static void smoothMusic(String picName)
-    {
-        Picture pix = new Picture(picName);
-        Picture smallP = pix.scale(1,1);
-        smallP.write(picName);
-        smallP.defaultConverter();
-        System.out.println();
-        //smallP.printNotes();
-        for (int i=0; i < smallP.getArray().size(); i++)
-        {
-            try {
-                Synthesizer midiSynth = MidiSystem.getSynthesizer();
-                midiSynth.open();
-                Instrument[] instr = midiSynth.getDefaultSoundbank().getInstruments();
-                MidiChannel[] mChannels = midiSynth.getChannels();
-                midiSynth.loadInstrument(instr[0]);//load an instrument
-                mChannels[0].noteOn((int)smallP.getArray().get(i), 300);//On channel 0, play note number 60 with velocity 100
-                try {
-                    Thread.sleep(12); // wait time in milliseconds to control duration
-                    System.out.println((int)smallP.getArray().get(i));
-                } catch (InterruptedException e) {
-                    System.out.println("CATTCH");
-                }
-            } catch (MidiUnavailableException e) {
-                System.out.println("unavible");
-            }
-        }
-    }
+
 
     /**
      * Method to return a string with information about this picture.

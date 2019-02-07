@@ -801,7 +801,7 @@ public class PictureExplorer implements MouseMotionListener, ActionListener, Mou
      */
     public static void main( String args[])
     {
-        Picture.smoothMusic("rsz_jellyfish.jpg");
+        Picture.song("jellyfish.jpg");
     }
 
 }
