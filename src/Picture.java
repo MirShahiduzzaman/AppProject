@@ -47,45 +47,43 @@ public void printNotes()
             }
         }
     }
+    public static void song(String picName)
+    {
+        Picture pix = new Picture(picName);
+        Picture smallP = pix.scale(1,1);
+        smallP.write(picName);
+        smallP.defaultConverter();
+        System.out.println();
+        int bass = 20;
+    for(int x =0; x< smallP.getArray().size();x++)
 
-    /**
-     * First Option: uses the red RGB value in each pixel
-     *               to add a note to the notes arrayList
-     */
-    public void RedConverter() {
-        Pixel[][] pixels = this.getPixels2D();
-        for (Pixel[] rowArray : pixels) {
-            for (Pixel pixelObj : rowArray) {
-                notes.add((pixelObj.getRed())/3);
-            }
-        }
-    }
+        {
+            if ( (int)smallP.getArray().get(x)< bass && bass > 20)
+                bass = (int)smallP.getArray().get(x);
 
-    /**
-     * Second Option: uses the green RGB value in each pixel
-     *                to add a note to the notes arrayList
-     */
-    public void GreenConverter() {
-        Pixel[][] pixels = this.getPixels2D();
-        for (Pixel[] rowArray : pixels) {
-            for (Pixel pixelObj : rowArray) {
-                notes.add((pixelObj.getGreen())/3);
             }
-        }
-    }
+                int bassCount = 0;
+                while (bassCount < 50) {
+                    try {
+                        Synthesizer midiSynth = MidiSystem.getSynthesizer();
+                        midiSynth.open();
+                        Instrument[] instr = midiSynth.getDefaultSoundbank().getInstruments();
+                        MidiChannel[] mChannels = midiSynth.getChannels();
+                        midiSynth.loadInstrument(instr[0]);//load an instrument
+                        mChannels[0].noteOn(bass, 500);//On channel 0, play note number 60 with velocity 100
+                        try {
+                            Thread.sleep(12); // wait time in milliseconds to control duration
+                            System.out.println(bass);
+                        } catch (InterruptedException e) {
+                            System.out.println("CATTCH");
+                        }
+                    } catch (MidiUnavailableException e) {
+                        System.out.println("unavible");
+                    }
+                    bassCount++;
+                }
+            }
 
-    /**
-     * Third Option: uses the blue RGB value in each pixel
-     *               to add a note to the notes arrayList
-     */
-    public void BlueConverter() {
-        Pixel[][] pixels = this.getPixels2D();
-        for (Pixel[] rowArray : pixels) {
-            for (Pixel pixelObj : rowArray) {
-                notes.add((pixelObj.getRed() + pixelObj.getGreen() + pixelObj.getBlue()) / 3);
-            }
-        }
-    }
 
     public static void smoothMusic(String picName)
     {
@@ -141,6 +139,46 @@ public void printNotes()
             }
         }
     }
+    /**
+     * First Option: uses the red RGB value in each pixel
+     *               to add a note to the notes arrayList
+     */
+    public void RedConverter() {
+        Pixel[][] pixels = this.getPixels2D();
+        for (Pixel[] rowArray : pixels) {
+            for (Pixel pixelObj : rowArray) {
+                notes.add((pixelObj.getRed())/3);
+            }
+        }
+    }
+
+    /**
+     * Second Option: uses the green RGB value in each pixel
+     *                to add a note to the notes arrayList
+     */
+    public void GreenConverter() {
+        Pixel[][] pixels = this.getPixels2D();
+        for (Pixel[] rowArray : pixels) {
+            for (Pixel pixelObj : rowArray) {
+                notes.add((pixelObj.getGreen())/3);
+            }
+        }
+    }
+
+    /**
+     * Third Option: uses the blue RGB value in each pixel
+     *               to add a note to the notes arrayList
+     */
+    public void BlueConverter() {
+        Pixel[][] pixels = this.getPixels2D();
+        for (Pixel[] rowArray : pixels) {
+            for (Pixel pixelObj : rowArray) {
+                notes.add((pixelObj.getRed() + pixelObj.getGreen() + pixelObj.getBlue()) / 3);
+            }
+        }
+    }
+
+
 
     /**
      * Method to return a string with information about this picture.
