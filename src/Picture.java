@@ -53,7 +53,7 @@ public void printNotes()
         Picture smallP = pix.scale(1,1);
         smallP.write(picName);
         smallP.defaultConverter();
-        System.out.println();
+        quickSort(smallP.getArray(),0,smallP.getArray().size());
         int bass = 20;
     for(int x =0; x< smallP.getArray().size();x++)
 
@@ -70,9 +70,9 @@ public void printNotes()
                         Instrument[] instr = midiSynth.getDefaultSoundbank().getInstruments();
                         MidiChannel[] mChannels = midiSynth.getChannels();
                         midiSynth.loadInstrument(instr[0]);//load an instrument
-                        mChannels[0].noteOn(bass, 500);//On channel 0, play note number 60 with velocity 100
+                        mChannels[0].noteOn(bass, 1000);//On channel 0, play note number 60 with velocity 100
                         try {
-                            Thread.sleep(12); // wait time in milliseconds to control duration
+                            Thread.sleep(1000); // wait time in milliseconds to control duration
                             System.out.println(bass);
                         } catch (InterruptedException e) {
                             System.out.println("CATTCH");
@@ -177,8 +177,40 @@ public void printNotes()
             }
         }
     }
+    public static void quickSort(ArrayList arr, int left, int right)
+    {
+        if(left<right)
+        {
+            int pivot = partition(arr,left,right);
 
+            quickSort(arr,left,pivot-1);
+            quickSort(arr,pivot+1,right);
+        }
+    }
 
+    public static int partition(ArrayList arr, int left, int right)
+    {
+        int pivot = (int)arr.get(right);
+        int i = left-1;
+
+        for(int j = left;j<right;j++)
+        {
+            if((int)arr.get(i)<=pivot)
+            {
+                i++;
+                swap(arr,i,j);
+            }
+        }
+        swap(arr,i+1,right);
+        return(i+1);
+    }
+
+    public static void swap(ArrayList arr,int pos1,int pos2)
+    {
+        int temp = (int)arr.get(pos1);
+        arr.set(pos1,(int)arr.get(pos2));
+        arr.set(pos2, temp);
+    }
 
     /**
      * Method to return a string with information about this picture.
