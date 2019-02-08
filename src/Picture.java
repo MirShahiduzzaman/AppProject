@@ -39,13 +39,14 @@ public void printNotes()
      * Default Option: uses the avg of the three RGB values in each
      *                 pixel to add a note to the notes arrayList
      */
-    public void defaultConverter() {
+    public String defaultConverter() {
         Pixel[][] pixels = this.getPixels2D();
         for (Pixel[] rowArray : pixels) {
             for (Pixel pixelObj : rowArray) {
                 notes.add((((pixelObj.getRed() + pixelObj.getGreen() + pixelObj.getBlue()) / 15) +30));
             }
         }
+        return("using all RGB values");
     }
     public static void song(String picName)
     {
@@ -165,12 +166,16 @@ public void printNotes()
              //   }
 
     public static void inOrderSong(String picName)
-    {
+    { String message = "";
       Picture pix = new Picture(picName);
       Picture smallP = pix.scale(1,1);
      smallP.write(picName);
-     smallP.redConverter();
-        clean(smallP.getArray());
+        for (int i=0; i < smallP.getArray().size(); i++) {
+            smallP.getArray().remove(i);
+        }
+     message += smallP.greenConverter();
+  //   message += " " + smallP.clean(smallP.getArray());
+     System.out.print(message);
         for (int i=0; i < smallP.getArray().size(); i++)
      {
          try {      System.out.println(smallP.getArray().get(i));
@@ -251,41 +256,46 @@ public void printNotes()
      * First Option: uses the red RGB value in each pixel
      *               to add a note to the notes arrayList
      */
-    public void redConverter() {
+    public String redConverter() {
         Pixel[][] pixels = this.getPixels2D();
         for (Pixel[] rowArray : pixels) {
             for (Pixel pixelObj : rowArray) {
-                notes.add(((pixelObj.getRed())/4)+25);
+                notes.add(((pixelObj.getRed())/4)+35);
             }
         }
+        return("using only red values");
+
     }
 
     /**
      * Second Option: uses the green RGB value in each pixel
      *                to add a note to the notes arrayList
      */
-    public void greenConverter() {
+    public String greenConverter() {
         Pixel[][] pixels = this.getPixels2D();
         for (Pixel[] rowArray : pixels) {
             for (Pixel pixelObj : rowArray) {
-                notes.add((pixelObj.getGreen()/4)+25);
+                notes.add((pixelObj.getGreen()/4)+35);
             }
         }
+        return("using only green values");
+
     }
 
     /**
      * Third Option: uses the blue RGB value in each pixel
      *               to add a note to the notes arrayList
      */
-    public void blueConverter() {
+    public String blueConverter() {
         Pixel[][] pixels = this.getPixels2D();
         for (Pixel[] rowArray : pixels) {
             for (Pixel pixelObj : rowArray) {
-                notes.add((pixelObj.getRed() + pixelObj.getGreen() + pixelObj.getBlue()/4)+25);
+                notes.add(( pixelObj.getBlue()/4)+35);
             }
         }
+        return("using only blue values");
     }
-    public static void clean(ArrayList list1)
+    public static String clean(ArrayList list1)
     {
         insertionSort(list1);
         int i=1;
@@ -295,7 +305,7 @@ public void printNotes()
                 list1.remove(i);
             i++;
         }
-
+return("in order");
     }
     public static void insertionSort(ArrayList list1)
     {
