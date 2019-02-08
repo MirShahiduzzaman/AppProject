@@ -43,7 +43,30 @@ public void printNotes()
         Pixel[][] pixels = this.getPixels2D();
         for (Pixel[] rowArray : pixels) {
             for (Pixel pixelObj : rowArray) {
-                notes.add((((pixelObj.getRed() + pixelObj.getGreen() + pixelObj.getBlue()) / 15) +30));
+                if(pixelObj.getRed() > pixelObj.getBlue() &&  pixelObj.getRed() > pixelObj.getGreen())
+            {
+                notes.add(((pixelObj.getRed())/10)+35);
+            }
+            else
+            {
+                if(pixelObj.getBlue() > pixelObj.getRed() &&  pixelObj.getBlue() > pixelObj.getGreen())
+                {
+                    notes.add(((pixelObj.getRed())/10)+55);
+                }
+                else
+                {
+                    if(pixelObj.getGreen() > pixelObj.getRed() &&  pixelObj.getGreen() > pixelObj.getBlue())
+                    {
+                        notes.add(((pixelObj.getRed())/10)+75);
+                    }
+                    else
+                    {
+                        notes.add((((pixelObj.getRed() + pixelObj.getGreen() + pixelObj.getBlue()) / 15) +30));
+
+                    }
+                }
+            }
+
             }
         }
         return("using all RGB values");
@@ -174,6 +197,7 @@ public void printNotes()
             smallP.getArray().remove(i);
         }
      message += smallP.greenConverter();
+        smallP.clean(smallP.getArray());
   //   message += " " + smallP.clean(smallP.getArray());
      System.out.print(message);
         for (int i=0; i < smallP.getArray().size(); i++)
@@ -332,17 +356,6 @@ return("in order");
             }
         }
     }
-    public static void quickSort(ArrayList arr, int left, int right)
-    {
-        if(left<right)
-        {
-            int pivot = partition(arr,left,right);
-
-            quickSort(arr,left,pivot-1);
-            quickSort(arr,pivot+1,right);
-        }
-    }
-
     public static int partition(ArrayList arr, int left, int right)
     {
         int pivot = (int)arr.get(right);
