@@ -17,7 +17,7 @@ public class Controller {
             Instrument[] instr = midiSynth.getDefaultSoundbank().getInstruments();
             MidiChannel[] mChannels = midiSynth.getChannels();
             midiSynth.loadInstrument(instr[0]);//load an instrument
-            int note = 20;
+            int note = 30;
             mChannels[0].noteOn(note, 300);//On channel 0, play note number 60 with velocity 100
             try {
                 Thread.sleep(1000); // wait time in milliseconds to control duration
