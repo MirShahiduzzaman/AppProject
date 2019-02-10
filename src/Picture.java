@@ -50,6 +50,12 @@ public class Picture extends SimplePicture {
     }
 
 
+    public void printNotes()
+    {
+        for(int x: notes)
+        System.out.println(x);
+    }
+
     /**
      * Constructor that takes the width and height
      * @param height the height of the desired picture
@@ -65,7 +71,7 @@ public class Picture extends SimplePicture {
      * Default Option: uses the avg of the three RGB values in each
      *                 pixel to add a note to the notes arrayList
      */
-    public void defaultConverter()
+    public String defaultConverter()
     {
         Pixel[][] pixels = this.getPixels2D();
         for (Pixel[] rowArray : pixels)
@@ -97,7 +103,7 @@ public class Picture extends SimplePicture {
                 }
             }
         }
-
+        return("using all RGB values");
     }
 
     public void inOrderSong()
@@ -110,6 +116,7 @@ public class Picture extends SimplePicture {
             this.getArray().remove(i);
         }
 
+        message += this.defaultConverter();
         this.clean();
 
 
@@ -126,7 +133,7 @@ public class Picture extends SimplePicture {
                     Instrument[] instr = midiSynth.getDefaultSoundbank().getInstruments();
                     MidiChannel[] mChannels = midiSynth.getChannels();
                     midiSynth.loadInstrument(instr[0]);//load an instrument
-                    mChannels[0].noteOn( this.getArray().get(i), 1000);
+                    mChannels[0].noteOn((int) this.getArray().get(i), 1000);
 
             } catch (MidiUnavailableException e) {
                 System.out.println("unavailable");
@@ -141,11 +148,12 @@ public class Picture extends SimplePicture {
     }
 
 
+
     /**
      * First Option: uses the red RGB value in each pixel
      *               to add a note to the notes arrayList
      */
-    public void redConverter() {
+    public String redConverter() {
         Pixel[][] pixels = this.getPixels2D();
         for (Pixel[] rowArray : pixels)
         {
@@ -154,6 +162,7 @@ public class Picture extends SimplePicture {
                 notes.add(((pixelObj.getRed())/4)+35);
             }
         }
+        return("using only red values");
 
     }
 
@@ -161,7 +170,7 @@ public class Picture extends SimplePicture {
      * Second Option: uses the green RGB value in each pixel
      *                to add a note to the notes arrayList
      */
-    public void greenConverter() {
+    public String greenConverter() {
         Pixel[][] pixels = this.getPixels2D();
         for (Pixel[] rowArray : pixels)
         {
@@ -170,6 +179,7 @@ public class Picture extends SimplePicture {
                 notes.add((pixelObj.getGreen()/4)+35);
             }
         }
+        return("using only green values");
 
     }
 
@@ -177,7 +187,7 @@ public class Picture extends SimplePicture {
      * Third Option: uses the blue RGB value in each pixel
      *               to add a note to the notes arrayList
      */
-    public void blueConverter()
+    public String blueConverter()
     {
         Pixel[][] pixels = this.getPixels2D();
         for (Pixel[] rowArray : pixels)
@@ -187,6 +197,7 @@ public class Picture extends SimplePicture {
                 notes.add(( pixelObj.getBlue()/4)+35);
             }
         }
+        return("using only blue values");
     }
 
     public void clean()
@@ -204,6 +215,7 @@ public class Picture extends SimplePicture {
             }
         }
     }
+
 
 
     /**
