@@ -804,7 +804,7 @@ public class PictureExplorer implements MouseMotionListener, ActionListener, Mou
         Picture pic = new Picture("rsz_rainbow.jpg");
 
         pic.makeRef(1,100);
-        pic.inOrderSong();
+        pic.song();
     }
 
 }

@@ -72,18 +72,52 @@ public class Picture extends SimplePicture {
                 if(pixelObj.getRed() > pixelObj.getBlue() &&  pixelObj.getRed() > pixelObj.getGreen()) // finds the most dominant color.
                 {
                 notes.add(((pixelObj.getRed())/10)+35);  // Uses a formula that takes the most dominant color's value and converts it to a piano key.
-                }                                        // Red represents piano keys 35-60 Green: 55-80 blue: 75-100 The scales overlap to produce a better sound
+                }                                        // Red represents piano keys 35-60 Green: 55-80 blue: 70-95 The scales overlap to produce a better sound
                 else                                     // If all colors are equal it converts the average of the colors ranging from 30-81
                 {
-                    if(pixelObj.getBlue() > pixelObj.getRed() &&  pixelObj.getBlue() > pixelObj.getGreen())
+                    if(pixelObj.getGreen() > pixelObj.getRed() &&  pixelObj.getGreen() > pixelObj.getBlue())
                     {
-                        notes.add(((pixelObj.getRed())/10)+55);
+                        notes.add(((pixelObj.getGreen())/10)+55);
                     }
                     else
                     {
-                        if(pixelObj.getGreen() > pixelObj.getRed() &&  pixelObj.getGreen() > pixelObj.getBlue())
+                        if(pixelObj.getBlue() > pixelObj.getRed() &&  pixelObj.getBlue() > pixelObj.getGreen())
                         {
-                            notes.add(((pixelObj.getRed())/10)+75);
+                            notes.add(((pixelObj.getBlue())/10)+70);
+                        }
+                        else
+                        {
+                            notes.add((((pixelObj.getRed() + pixelObj.getGreen() + pixelObj.getBlue()) / 15) +30));
+
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+    public void reversedConverter()
+    {
+        Pixel[][] pixels = this.getPixels2D();
+        for (Pixel[] rowArray : pixels)
+        {
+            for (Pixel pixelObj : rowArray)
+            {
+                if(pixelObj.getBlue() > pixelObj.getRed() &&  pixelObj.getBlue() > pixelObj.getGreen())// finds the most dominant color.
+                {
+                    notes.add(((pixelObj.getBlue())/10)+35);  // Uses a formula that takes the most dominant color's value and converts it to a piano key.
+                }                                        //Reverse of default converter Blue represents piano keys 35-60 Green: 55-80 Red: 75-100 The scales overlap to produce a better sound
+                else                                     // If all colors are equal it converts the average of the colors ranging from 30-81
+                {
+                    if(pixelObj.getGreen() > pixelObj.getRed() &&  pixelObj.getGreen() > pixelObj.getBlue())
+                    {
+                        notes.add(((pixelObj.getGreen())/10)+55);
+                    }
+                    else
+                    {
+                        if(pixelObj.getRed() > pixelObj.getBlue() &&  pixelObj.getRed() > pixelObj.getGreen())
+                        {
+                            notes.add(((pixelObj.getRed())/10)+70);
                         }
                         else
                         {
@@ -97,7 +131,7 @@ public class Picture extends SimplePicture {
 
     }
 
-    public void inOrderSong()
+    public void song()
     {
 
         this.write(this.getFileName());
