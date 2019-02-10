@@ -6,14 +6,9 @@ import java.util.*;
 
 public class Picture extends SimplePicture {
 
-    ArrayList<Integer> notes = new ArrayList<Integer>();
-    ArrayList<Integer> ref = new ArrayList<Integer>();
-    ///////////////////// constructors //////////////////////////////////
+    ArrayList<Integer> notes = new ArrayList<Integer>(); //stores notes + keys that are close in scale to make song more smooth and realistic
+    ArrayList<Integer> ref = new ArrayList<Integer>(); // stores each pixel's piano note equivalent made in the converter methods
 
-    /**
-     * Constructor that takes a file name and creates the picture
-     * @param fileName the name of the file to create the picture from
-     */
     public Picture(String fileName)
     {
         // let the parent class handle this fileName
@@ -50,11 +45,7 @@ public class Picture extends SimplePicture {
     }
 
 
-    public void printNotes()
-    {
-        for(int x: notes)
-        System.out.println(x);
-    }
+
 
     /**
      * Constructor that takes the width and height
@@ -71,18 +62,18 @@ public class Picture extends SimplePicture {
      * Default Option: uses the avg of the three RGB values in each
      *                 pixel to add a note to the notes arrayList
      */
-    public String defaultConverter()
+    public void defaultConverter()
     {
         Pixel[][] pixels = this.getPixels2D();
         for (Pixel[] rowArray : pixels)
         {
             for (Pixel pixelObj : rowArray)
             {
-                if(pixelObj.getRed() > pixelObj.getBlue() &&  pixelObj.getRed() > pixelObj.getGreen())
+                if(pixelObj.getRed() > pixelObj.getBlue() &&  pixelObj.getRed() > pixelObj.getGreen()) // finds the most dominant color.
                 {
-                notes.add(((pixelObj.getRed())/10)+35);
-                }
-                else
+                notes.add(((pixelObj.getRed())/10)+35);  // Uses a formula that takes the most dominant color's value and converts it to a piano key.
+                }                                        // Red represents piano keys 35-60 Green: 55-80 blue: 75-100 The scales overlap to produce a better sound
+                else                                     // If all colors are equal it converts the average of the colors ranging from 30-81
                 {
                     if(pixelObj.getBlue() > pixelObj.getRed() &&  pixelObj.getBlue() > pixelObj.getGreen())
                     {
@@ -103,27 +94,24 @@ public class Picture extends SimplePicture {
                 }
             }
         }
-        return("using all RGB values");
+
     }
 
     public void inOrderSong()
     {
-        String message = "";
+
         this.write(this.getFileName());
 
-        for (int i=this.getArray().size()-1; i >= 0; i--)
+        for (int i=this.getArray().size()-1; i >= 0; i--) //clears notes array
         {
             this.getArray().remove(i);
         }
 
-        message += this.defaultConverter();
-        this.clean();
+        this.defaultConverter(); //converts pixels to notes
+        this.clean();            //makes song sound realistic by replacing it with a more complementary key
 
 
-      //   message += " " + smallP.clean(smallP.getArray());
-        System.out.print(message);
-
-        for (int i=0; i < this.getArray().size(); i++)
+        for (int i=0; i < this.getArray().size(); i++) //loops through array and plays each key
         {
             try {
                 System.out.println(this.getArray().get(i));
@@ -153,7 +141,7 @@ public class Picture extends SimplePicture {
      * First Option: uses the red RGB value in each pixel
      *               to add a note to the notes arrayList
      */
-    public String redConverter() {
+    public void redConverter() { //pays attention to only the red values. Larger red value == higher key on piano
         Pixel[][] pixels = this.getPixels2D();
         for (Pixel[] rowArray : pixels)
         {
@@ -162,7 +150,7 @@ public class Picture extends SimplePicture {
                 notes.add(((pixelObj.getRed())/4)+35);
             }
         }
-        return("using only red values");
+
 
     }
 
@@ -170,7 +158,7 @@ public class Picture extends SimplePicture {
      * Second Option: uses the green RGB value in each pixel
      *                to add a note to the notes arrayList
      */
-    public String greenConverter() {
+    public void greenConverter() { //pays attention to only the green values. Larger green value == higher key on piano
         Pixel[][] pixels = this.getPixels2D();
         for (Pixel[] rowArray : pixels)
         {
@@ -179,7 +167,7 @@ public class Picture extends SimplePicture {
                 notes.add((pixelObj.getGreen()/4)+35);
             }
         }
-        return("using only green values");
+
 
     }
 
@@ -187,7 +175,7 @@ public class Picture extends SimplePicture {
      * Third Option: uses the blue RGB value in each pixel
      *               to add a note to the notes arrayList
      */
-    public String blueConverter()
+    public String blueConverter() //pays attention to only the blue values. Larger blue value == higher key on piano
     {
         Pixel[][] pixels = this.getPixels2D();
         for (Pixel[] rowArray : pixels)
