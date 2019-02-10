@@ -7,6 +7,7 @@ import java.util.*;
 public class Picture extends SimplePicture {
 
     ArrayList<Integer> notes = new ArrayList<Integer>();
+    ArrayList<Integer> ref = new ArrayList<Integer>();
     ///////////////////// constructors //////////////////////////////////
 
     /**
@@ -19,11 +20,42 @@ public class Picture extends SimplePicture {
         super(fileName);
     }
 
-public void printNotes()
-{
-    for(int x: notes)
-    System.out.println(x);
-}
+    public void makeRef(int min, int max)
+    {
+        int tempNum = min;
+        ref.add(tempNum);
+
+        while(tempNum<max)
+        {
+            for(int i = 0;i<2;i++)
+            {
+                tempNum += 2;
+                ref.add(tempNum);
+            }
+
+            tempNum++;
+            ref.add(tempNum);
+
+            for(int i = 0;i<3;i++)
+            {
+                tempNum += 2;
+                ref.add(tempNum);
+            }
+
+            tempNum++;
+            ref.add(tempNum);
+        }
+
+        //IDEA: Check if arrayList contains max, if not add it to the arrayList
+    }
+
+
+    public void printNotes()
+    {
+        for(int x: notes)
+        System.out.println(x);
+    }
+
     /**
      * Constructor that takes the width and height
      * @param height the height of the desired picture
@@ -39,38 +71,41 @@ public void printNotes()
      * Default Option: uses the avg of the three RGB values in each
      *                 pixel to add a note to the notes arrayList
      */
-    public String defaultConverter() {
+    public String defaultConverter()
+    {
         Pixel[][] pixels = this.getPixels2D();
-        for (Pixel[] rowArray : pixels) {
-            for (Pixel pixelObj : rowArray) {
+        for (Pixel[] rowArray : pixels)
+        {
+            for (Pixel pixelObj : rowArray)
+            {
                 if(pixelObj.getRed() > pixelObj.getBlue() &&  pixelObj.getRed() > pixelObj.getGreen())
-            {
-                notes.add(((pixelObj.getRed())/10)+35);
-            }
-            else
-            {
-                if(pixelObj.getBlue() > pixelObj.getRed() &&  pixelObj.getBlue() > pixelObj.getGreen())
                 {
-                    notes.add(((pixelObj.getRed())/10)+55);
+                notes.add(((pixelObj.getRed())/10)+35);
                 }
                 else
                 {
-                    if(pixelObj.getGreen() > pixelObj.getRed() &&  pixelObj.getGreen() > pixelObj.getBlue())
+                    if(pixelObj.getBlue() > pixelObj.getRed() &&  pixelObj.getBlue() > pixelObj.getGreen())
                     {
-                        notes.add(((pixelObj.getRed())/10)+75);
+                        notes.add(((pixelObj.getRed())/10)+55);
                     }
                     else
                     {
-                        notes.add((((pixelObj.getRed() + pixelObj.getGreen() + pixelObj.getBlue()) / 15) +30));
+                        if(pixelObj.getGreen() > pixelObj.getRed() &&  pixelObj.getGreen() > pixelObj.getBlue())
+                        {
+                            notes.add(((pixelObj.getRed())/10)+75);
+                        }
+                        else
+                        {
+                            notes.add((((pixelObj.getRed() + pixelObj.getGreen() + pixelObj.getBlue()) / 15) +30));
 
+                        }
                     }
                 }
-            }
-
             }
         }
         return("using all RGB values");
     }
+
     public static void song(String picName)
     {
         Picture pix = new Picture(picName);
@@ -186,104 +221,69 @@ public void printNotes()
                         }
 
                     }
-             //   }
 
-    public static void inOrderSong(String picName)
-    { String message = "";
-      Picture pix = new Picture(picName);
-      Picture smallP = pix.scale(1,1);
-     smallP.write(picName);
-        for (int i=0; i < smallP.getArray().size(); i++) {
-            smallP.getArray().remove(i);
-        }
-     message += smallP.greenConverter();
-        smallP.clean(smallP.getArray());
-  //   message += " " + smallP.clean(smallP.getArray());
-     System.out.print(message);
-        for (int i=0; i < smallP.getArray().size(); i++)
-     {
-         try {      System.out.println(smallP.getArray().get(i));
-
-             Synthesizer midiSynth = MidiSystem.getSynthesizer();
-                                        midiSynth.open();
-                                        Instrument[] instr = midiSynth.getDefaultSoundbank().getInstruments();
-                                        MidiChannel[] mChannels = midiSynth.getChannels();
-                                        midiSynth.loadInstrument(instr[0]);//load an instrument
-                                        mChannels[0].noteOn((int) smallP.getArray().get(i), 1000);//On channel 0, play note number 60 with velocity 100
-
-                                    } catch (MidiUnavailableException e) {
-                                        System.out.println("unavible");
-                                    }
-                                    try {
-                                        Thread.sleep(200); // wait time in milliseconds to control duration
-                                    } catch (InterruptedException e) {
-                                        System.out.println("CATTCH");
-                                    }
-    }
-}
-
-    public static void smoothMusic(String picName)
+    public void inOrderSong()
     {
-        int prevNote = -1;
+        String message = "";
+        this.write(this.getFileName());
 
-        Picture pix = new Picture(picName);
-        Picture smallP = pix.scale(1,1);
-        smallP.write(picName);
-        smallP.defaultConverter();
-        System.out.println();
-        //smallP.printNotes();
-        for (int i=0; i < smallP.getArray().size(); i++)
+        for (int i=this.getArray().size()-1; i >= 0; i--)
+        {
+            this.getArray().remove(i);
+        }
+
+        message += this.greenConverter();
+        this.clean();
+        //need to work on cleaning
+
+      //   message += " " + smallP.clean(smallP.getArray());
+        System.out.print(message);
+
+        for (int i=0; i < this.getArray().size(); i++)
         {
             try {
-                Synthesizer midiSynth = MidiSystem.getSynthesizer();
-                midiSynth.open();
-                Instrument[] instr = midiSynth.getDefaultSoundbank().getInstruments();
-                MidiChannel[] mChannels = midiSynth.getChannels();
-                midiSynth.loadInstrument(instr[0]);//load an instrument
-                if(prevNote == -1)
-                {
-                    prevNote = (int)smallP.getArray().get(i);
-                }
-                else
-                {
-                    if(Math.abs(prevNote - (int)smallP.getArray().get(i)) > 127)
-                    {
-                        smallP.getArray().set(i,(Integer)(255-(int)smallP.getArray().get(i)));
-                        System.out.println("127: " + (int)smallP.getArray().get(i));
-                    }
-                    if(Math.abs(prevNote - (int)smallP.getArray().get(i)) > 63)
-                    {
-                        smallP.getArray().set(i,(Integer)(127-(int)smallP.getArray().get(i)));
-                        System.out.println("63: " + (int)smallP.getArray().get(i));
-                    }
-                    if(Math.abs(prevNote - (int)smallP.getArray().get(i)) > 32)
-                    {
-                        smallP.getArray().set(i,(Integer)(63-(int)smallP.getArray().get(i)));
-                        System.out.println("32: " + (int)smallP.getArray().get(i));
-                    }
-                    prevNote = (int)smallP.getArray().get(i);
-                }
+                System.out.println(this.getArray().get(i));
 
-                mChannels[0].noteOn((int)smallP.getArray().get(i), 300);//On channel 0, play note number 60 with velocity 100
-                try {
-                    Thread.sleep(12); // wait time in milliseconds to control duration
-                    System.out.println((int)smallP.getArray().get(i));
-                } catch (InterruptedException e) {
-                    System.out.println("CATCH");
-                }
+                Synthesizer midiSynth = MidiSystem.getSynthesizer();
+                    midiSynth.open();
+                    Instrument[] instr = midiSynth.getDefaultSoundbank().getInstruments();
+                    MidiChannel[] mChannels = midiSynth.getChannels();
+                    midiSynth.loadInstrument(instr[0]);//load an instrument
+                    mChannels[0].noteOn((int) this.getArray().get(i), 1000);//On channel 0, play note number 60 with
+                // velocity 100
+
             } catch (MidiUnavailableException e) {
                 System.out.println("unavailable");
             }
+
+            try {
+                Thread.sleep(200); // wait time in milliseconds to control duration
+            } catch (InterruptedException e) {
+                System.out.println("CATCH");
+            }
         }
     }
+
+    public void beautyMusic() {
+        for (int i = 0; i < notes.size(); i++) {
+            for (int a = ref.size()-1; a >=0; a--) {
+                if (notes.get(i) > ref.get(a)) {
+                    notes.set(i, ref.get(a));
+                }
+            }
+        }
+    }
+
     /**
      * First Option: uses the red RGB value in each pixel
      *               to add a note to the notes arrayList
      */
     public String redConverter() {
         Pixel[][] pixels = this.getPixels2D();
-        for (Pixel[] rowArray : pixels) {
-            for (Pixel pixelObj : rowArray) {
+        for (Pixel[] rowArray : pixels)
+        {
+            for (Pixel pixelObj : rowArray)
+            {
                 notes.add(((pixelObj.getRed())/4)+35);
             }
         }
@@ -297,8 +297,10 @@ public void printNotes()
      */
     public String greenConverter() {
         Pixel[][] pixels = this.getPixels2D();
-        for (Pixel[] rowArray : pixels) {
-            for (Pixel pixelObj : rowArray) {
+        for (Pixel[] rowArray : pixels)
+        {
+            for (Pixel pixelObj : rowArray)
+            {
                 notes.add((pixelObj.getGreen()/4)+35);
             }
         }
@@ -310,27 +312,43 @@ public void printNotes()
      * Third Option: uses the blue RGB value in each pixel
      *               to add a note to the notes arrayList
      */
-    public String blueConverter() {
+    public String blueConverter()
+    {
         Pixel[][] pixels = this.getPixels2D();
-        for (Pixel[] rowArray : pixels) {
-            for (Pixel pixelObj : rowArray) {
+        for (Pixel[] rowArray : pixels)
+        {
+            for (Pixel pixelObj : rowArray)
+            {
                 notes.add(( pixelObj.getBlue()/4)+35);
             }
         }
         return("using only blue values");
     }
-    public static String clean(ArrayList list1)
+
+    public void clean()
     {
-        insertionSort(list1);
-        int i=1;
-       while(i<list1.size()-1)
+//        int b=list1.size()-2;
+//        while(b>=0)
+//        {
+//            if(((int)list1.get(b) == (int)list1.get(b+1)) || (list1.get(b) < 30) )
+//                list1.remove(b);
+//            b--;
+//        }
+
+        for (int i = 0; i < notes.size(); i++)
         {
-            if((list1.get(i) == list1.get(i-1)) || ((int)list1.get(i) < 30) )
-                list1.remove(i);
-            i++;
+            for (int a = ref.size()-1; a >=0; a--)
+            {
+                if (notes.get(i) > ref.get(a))
+                {
+                    notes.set(i, ref.get(a));
+                    a=-1;
+                }
+            }
         }
-return("in order");
+        //insertionSort(notes);
     }
+
     public static void insertionSort(ArrayList list1)
     {
         int swapPos;
@@ -356,22 +374,6 @@ return("in order");
             }
         }
     }
-    public static int partition(ArrayList arr, int left, int right)
-    {
-        int pivot = (int)arr.get(right);
-        int i = left-1;
-
-        for(int j = left;j<right;j++)
-        {
-            if((int)arr.get(i)<=pivot)
-            {
-                i++;
-                swap(arr,i,j);
-            }
-        }
-        swap(arr,i+1,right);
-        return(i+1);
-    }
 
     public static void swap(ArrayList arr,int pos1,int pos2)
     {
@@ -391,10 +393,9 @@ return("in order");
                 " height " + getHeight()
                 + " width " + getWidth();
         return output;
-
     }
 
-    public ArrayList getArray()
+    public ArrayList<Integer> getArray()
     {
         return notes;
     }
