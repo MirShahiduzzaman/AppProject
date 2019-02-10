@@ -106,122 +106,6 @@ public class Picture extends SimplePicture {
         return("using all RGB values");
     }
 
-    public static void song(String picName)
-    {
-        Picture pix = new Picture(picName);
-        Picture smallP = pix.scale(1,1);
-        smallP.write(picName);
-        smallP.defaultConverter();
-        insertionSort(smallP.getArray());
-        int bassLow = 25;
-        int bassHigh = 35;
-        int bass = 25;
-        int notePos = 0;
-        while((notePos <= smallP.getArray().size()-1) && bassHigh > (int)smallP.getArray().get(notePos))
-        {
-            if(bassLow < (int)smallP.getArray().get(notePos))
-            {
-                bass = (int)smallP.getArray().get(notePos);
-            }
-            notePos++;
-        }
-        int bassCount = 0;
-                while (bassCount < 10) {
-                    System.out.println(bassCount%3);
-
-//                    try {
-//                        Synthesizer midiSynth = MidiSystem.getSynthesizer();
-//                        midiSynth.open();
-//                        Instrument[] instr = midiSynth.getDefaultSoundbank().getInstruments();
-//                        MidiChannel[] mChannels = midiSynth.getChannels();
-//                        midiSynth.loadInstrument(instr[0]);//load an instrument
-//                        mChannels[2].noteOn(bass, 500);//On channel 0, play note number 60 with velocity 100
-//
-//                    } catch (MidiUnavailableException e) {
-//                        System.out.println("unavible");
-//                    }
-
-                    if (bassCount%10 == 3) {
-                        try {
-                            Synthesizer midiSynth = MidiSystem.getSynthesizer();
-                            midiSynth.open();
-                            Instrument[] instr = midiSynth.getDefaultSoundbank().getInstruments();
-                            MidiChannel[] mChannels = midiSynth.getChannels();
-                            midiSynth.loadInstrument(instr[0]);//load an instrument
-                            mChannels[0].noteOn(((int)smallP.getArray().get(smallP.getArray().size() / 2)), 1000);//On channel 0, play note number 60 with velocity 100
-                            System.out.println((int) smallP.getArray().get(smallP.getArray().size()));
-                        } catch (MidiUnavailableException e) {
-                            System.out.println("unavible");
-                        }
-                        try {
-                            Thread.sleep(1000); // wait time in milliseconds to control duration
-                        } catch (InterruptedException e) {
-                            System.out.println("CATTCH");
-                        }
-//                    } else {
-//                        if (bassCount % 10 == 6) {
-//                            try {
-//                                Synthesizer midiSynth = MidiSystem.getSynthesizer();
-//                                midiSynth.open();
-//                                Instrument[] instr = midiSynth.getDefaultSoundbank().getInstruments();
-//                                MidiChannel[] mChannels = midiSynth.getChannels();
-//                                midiSynth.loadInstrument(instr[0]);//load an instrument
-//                                mChannels[0].noteOn((int) smallP.getArray().get(smallP.getArray().size() / 2), 1000);//On channel 0, play note number 60 with velocity 100
-//
-//                            } catch (MidiUnavailableException e) {
-//                                System.out.println("unavible");
-//                            }
-//                            try {
-//                                Thread.sleep(500); // wait time in milliseconds to control duration
-//                                System.out.println(bass);
-//                            } catch (InterruptedException e) {
-//                                System.out.println("CATTCH");
-//                            }
-//                            try {
-//                                Synthesizer midiSynth = MidiSystem.getSynthesizer();
-//                                midiSynth.open();
-//                                Instrument[] instr = midiSynth.getDefaultSoundbank().getInstruments();
-//                                MidiChannel[] mChannels = midiSynth.getChannels();
-//                                midiSynth.loadInstrument(instr[0]);//load an instrument
-//                                mChannels[0].noteOn((int) smallP.getArray().get(smallP.getArray().size() / 2), 1000);//On channel 0, play note number 60 with velocity 100
-//
-//                            } catch (MidiUnavailableException e) {
-//                                System.out.println("unavible");
-//                            }}
-//
-//                        else{
-//                                if (bassCount % 10 == 8) {
-//                                    try {
-//                                        Synthesizer midiSynth = MidiSystem.getSynthesizer();
-//                                        midiSynth.open();
-//                                        Instrument[] instr = midiSynth.getDefaultSoundbank().getInstruments();
-//                                        MidiChannel[] mChannels = midiSynth.getChannels();
-//                                        midiSynth.loadInstrument(instr[0]);//load an instrument
-//                                        mChannels[0].noteOn((int) smallP.getArray().get(smallP.getArray().size() / 2), 1000);//On channel 0, play note number 60 with velocity 100
-//
-//                                    } catch (MidiUnavailableException e) {
-//                                        System.out.println("unavible");
-//                                    }
-//                                    try {
-//                                        Thread.sleep(1000); // wait time in milliseconds to control duration
-//                                        System.out.println(bass);
-//                                    } catch (InterruptedException e) {
-//                                        System.out.println("CATTCH");
-//                                    }
-//                                } else {
-//                                    try {
-//                                        Thread.sleep(1000); // wait time in milliseconds to control duration
-//                                        System.out.println(bass);
-//                                    } catch (InterruptedException e) {
-//                                        System.out.println("CATTCH");
-//                                    }
-//                                }
-                            }
-                    bassCount++;
-                        }
-
-                    }
-
     public void inOrderSong()
     {
         String message = "";
@@ -232,9 +116,9 @@ public class Picture extends SimplePicture {
             this.getArray().remove(i);
         }
 
-        message += this.greenConverter();
+        message += this.defaultConverter();
         this.clean();
-        //need to work on cleaning
+
 
       //   message += " " + smallP.clean(smallP.getArray());
         System.out.print(message);
@@ -249,8 +133,7 @@ public class Picture extends SimplePicture {
                     Instrument[] instr = midiSynth.getDefaultSoundbank().getInstruments();
                     MidiChannel[] mChannels = midiSynth.getChannels();
                     midiSynth.loadInstrument(instr[0]);//load an instrument
-                    mChannels[0].noteOn((int) this.getArray().get(i), 1000);//On channel 0, play note number 60 with
-                // velocity 100
+                    mChannels[0].noteOn((int) this.getArray().get(i), 1000);
 
             } catch (MidiUnavailableException e) {
                 System.out.println("unavailable");
@@ -264,15 +147,6 @@ public class Picture extends SimplePicture {
         }
     }
 
-    public void beautyMusic() {
-        for (int i = 0; i < notes.size(); i++) {
-            for (int a = ref.size()-1; a >=0; a--) {
-                if (notes.get(i) > ref.get(a)) {
-                    notes.set(i, ref.get(a));
-                }
-            }
-        }
-    }
 
     /**
      * First Option: uses the red RGB value in each pixel
@@ -327,13 +201,6 @@ public class Picture extends SimplePicture {
 
     public void clean()
     {
-//        int b=list1.size()-2;
-//        while(b>=0)
-//        {
-//            if(((int)list1.get(b) == (int)list1.get(b+1)) || (list1.get(b) < 30) )
-//                list1.remove(b);
-//            b--;
-//        }
 
         for (int i = 0; i < notes.size(); i++)
         {
@@ -346,41 +213,8 @@ public class Picture extends SimplePicture {
                 }
             }
         }
-        //insertionSort(notes);
     }
 
-    public static void insertionSort(ArrayList list1)
-    {
-        int swapPos;
-        int min;
-
-        for(int i = 1;i<list1.size();i++)
-        {
-            swapPos = i;
-            min = (int)list1.get(swapPos);
-
-            for(int a = i-1;a>=0;a--)
-            {
-                if((int)list1.get(a)>min)
-                {
-                    swap(list1,swapPos,a);
-                    swapPos = a;
-                    min = (int)list1.get(swapPos);
-                }
-                else
-                {
-                    a=-1;
-                }
-            }
-        }
-    }
-
-    public static void swap(ArrayList arr,int pos1,int pos2)
-    {
-        int temp = (int)arr.get(pos1);
-        arr.set(pos1,arr.get(pos2));
-        arr.set(pos2, temp);
-    }
 
     /**
      * Method to return a string with information about this picture.
