@@ -11,18 +11,17 @@ import java.net.*;
  *
  * @author Barb Ericson ericson@cc.gatech.edu
  */
-public class FileChooser
-{
+public class FileChooser {
 
     /////////////////////// methods /////////////////////////////
 
     /**
      * Method to get the full path for the passed file name
+     *
      * @param fileName the name of a file
      * @return the full path for the file
      */
-    public static String getMediaPath(String fileName)
-    {
+    public static String getMediaPath(String fileName) {
         String path = null;
         String directory = getMediaDirectory();
         boolean done = true;
@@ -34,11 +33,11 @@ public class FileChooser
 
     /**
      * Method to pick an item using the file chooser
+     *
      * @param fileChooser the file Chooser to use
      * @return the path name
      */
-    public static String pickPath(JFileChooser fileChooser)
-    {
+    public static String pickPath(JFileChooser fileChooser) {
         String path = null;
 
         /* create a JFrame to be the parent of the file
@@ -61,10 +60,10 @@ public class FileChooser
      * Method to let the user pick a file and return
      * the full file name as a string.  If the user didn't
      * pick a file then the file name will be null.
+     *
      * @return the full file name of the picked file or null
      */
-    public static String pickAFile()
-    {
+    public static String pickAFile() {
         JFileChooser fileChooser = null;
 
         // start off the file name as null
@@ -95,10 +94,10 @@ public class FileChooser
 
     /**
      * Method to get the directory for the media
+     *
      * @return the media directory
      */
-    public static String getMediaDirectory()
-    {
+    public static String getMediaDirectory() {
         String directory = null;
         boolean done = false;
         File dirFile = null;
@@ -108,8 +107,8 @@ public class FileChooser
             // get the URL for where we loaded this class
             Class currClass = Class.forName("FileChooser");
             URL classURL = currClass.getResource("FileChooser.class");
-            URL fileURL = new URL(classURL,"../../../images/");
-            System.out.println("Debug URL:"+fileURL);
+            URL fileURL = new URL(classURL, "../../../images/");
+            System.out.println("Debug URL:" + fileURL);
             directory = fileURL.getPath();
             directory = URLDecoder.decode(directory, "UTF-8");
             dirFile = new File(directory);

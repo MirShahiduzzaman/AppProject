@@ -1,11 +1,10 @@
 public class SoundOpt {
-    public static void avgEach(String picture)
-    {
+    public static void avgEach(String picture) {
         System.out.println("pix");
         Picture pix = new Picture(picture);
 
         System.out.println("pix");
-        Picture smallP = pix.scale(.5,.5);
+        Picture smallP = pix.scale(.5, .5);
         System.out.println("pix");
 
         smallP.write("normal");
@@ -14,8 +13,7 @@ public class SoundOpt {
         smallP.explore();
     }
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         avgEach("Tulips.jpg");
     }
 }
